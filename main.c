@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include"sets.h"
 
+#define MAX_SCAN 20
 //Functions to implement
 Set Union(Set S1,Set S2)
 {
@@ -46,7 +47,7 @@ Set Intersection(Set S1,Set S2)
     int i=0;
     HashElement *ptr=NULL;
     status_code sc;
-    if(Size(S1)<Size(S2))
+    if(Size(S1)<=Size(S2))
     {
         for(i=0;i<S1.HashSize;i++)
         {
@@ -119,15 +120,174 @@ Bool Subset(Set S1,Set S2)//Checks for S1 as subset of S2
     return retval;
 }
 
+void EditSetUI(Set *S)//Available for dynamic sets only...
+{
+    int exit=0;
+    int choice=0;
+    char str[MAX_SCAN];
+    status_code sc;
+    while(exit==0)
+    {
+        printf("\n");
+        printf("\nWhat do you want to do:");
+        printf("\n1.Enter element in set");
+        printf("\n2.Delete element from set");
+        printf("\n3.Print the set");
+        printf("\n4.Any other number to go back");
+        printf("\nYour Choice:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                    printf("\nEnter the element(alphabetic string):");
+                    scanf("%s",str);
+                    sc=add(S,str);
+                    printf("HashIndex:%d",HashFunction(str,S->HashSize));
+                    if(sc==SUCCESS)
+                    {
+                        printf("\nSuccessful Insertion");
+                    }
+                    else
+                    {
+                        printf("\nSome error occured!!");
+                    }
+                    break;
+
+            case 2:
+                    printf("\nEnter the element to be deleted:");
+                    scanf("%s",str);
+                    sc=delete(S,str);
+                    if(sc==SUCCESS)
+                    {
+                        printf("\nSuccessful Deletion");
+                    }
+                    else
+                    {
+                        printf("\nElement is not present in the set!!");
+                    }
+                    break;
+
+            case 3:
+                    printSet(*S);
+                    break;
+
+            default:
+                    exit=1;
+                    break;
+        }
+    }
+    
+}
+
+void FlushSet(Set *S)
+{
+    HashElement *ptr=NULL,*prev=NULL;
+    int i=0;
+    for(i=0;i<S->HashSize;i++)
+    {
+        ptr=(S->HashTablePtr)[i];
+        while(ptr!=NULL)
+        {
+            prev=ptr;
+            ptr=ptr->next;
+            free(prev->set_element);
+            free(prev);
+        }
+    }
+    free(S->HashTablePtr);
+    S->cardinality=0;
+    S->HashTablePtr=NULL;
+}
+
 void main()
 {
-    Set S;
+    Set S,S1,S2;
     InitializeEmptySet(&S);
-    char str[10];
-    char **list=NULL;
-    int size=0;
-    status_code sc;
+    InitializeEmptySet(&S1);
+    InitializeEmptySet(&S2);
+    int exit=0;
+    int choice;
+    Bool isSubset;
+    while(exit==0)
+    {
+        printf("\n");
+        printf("\nWhat do you want to do:");
+        printf("\n1.Edit Set 'S1'");
+        printf("\n2.Edit Set 'S2'");
+        printf("\n3.Print Both Sets");
+        printf("\n4.Get the Union of the sets in Set 'S'");
+        printf("\n5.Get the Intersection of the sets in Set 'S'");
+        printf("\n6.Get the Difference of the sets in Set 'S'");
+        printf("\n7.Check whether S1 is a subset of S2");
+        printf("\n8.Any other number to go back");
+        printf("\nYour Choice:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                    EditSetUI(&S1);
+                    break;
+            
+            case 2:
+                    EditSetUI(&S2);
+                    break;
+
+            case 3:
+                    printf("\n");
+                    printf("\nSet S1:");
+                    printSet(S1);
+                    printf("\n");
+                    printf("\nSet S2:");
+                    printSet(S2);
+                    break;
+
+            case 4:
+                    S=Union(S1,S2);
+                    printSet(S);
+                    FlushSet(&S);
+                    //Remember to free all stuff in S
+                    break;
+
+            case 5:
+                    S=Intersection(S1,S2);
+                    printSet(S);
+                    FlushSet(&S);
+                    //Remember to free all stuff in S
+                    break;
+
+            case 6:
+                    S=Difference(S1,S2);
+                    printSet(S);
+                    FlushSet(&S);
+                    //Remember to free all stuff in S
+                    break;
+
+            case 7:
+                    isSubset=Subset(S1,S2);
+                    if(isSubset==TRUE)
+                    {
+                        printf("\n\nYes,it is a subset");
+                    }
+                    else
+                    {
+                        printf("\n\nNo,it isin't a subset");
+                    }
+                    break;
+
+            default:
+                    exit=1;
+                    break;
+
+        }
+    }
+}
     
+
+
+
+
+
+
     //-------------BELOW part is a tester to test add,delete from set------
     /*
     int loop=0,choice=0;
@@ -190,4 +350,3 @@ void main()
     }
     */
     //-----END of tester for add,remove part-------------------------------
-}
