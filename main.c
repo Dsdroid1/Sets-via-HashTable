@@ -207,79 +207,140 @@ void main()
     InitializeEmptySet(&S2);
     int exit=0;
     int choice;
+    int isStatic=0;
     Bool isSubset;
-    while(exit==0)
+    
+    printf("\n");
+    printf("\nWhat kind of allocation do you wamt:");
+    printf("\n1.Dynamic");
+    printf("\n2.Static");
+    printf("\nYour Choice:");
+    scanf("%d",&isStatic);
+
+    switch(isStatic)
     {
-        printf("\n");
-        printf("\nWhat do you want to do:");
-        printf("\n1.Edit Set 'S1'");
-        printf("\n2.Edit Set 'S2'");
-        printf("\n3.Print Both Sets");
-        printf("\n4.Get the Union of the sets in Set 'S'");
-        printf("\n5.Get the Intersection of the sets in Set 'S'");
-        printf("\n6.Get the Difference of the sets in Set 'S'");
-        printf("\n7.Check whether S1 is a subset of S2");
-        printf("\n8.Any other number to go back");
-        printf("\nYour Choice:");
-        scanf("%d",&choice);
-        switch(choice)
-        {
-            case 1:
-                    EditSetUI(&S1);
-                    break;
-            
-            case 2:
-                    EditSetUI(&S2);
-                    break;
-
-            case 3:
+        case 1: 
+                while(exit==0)
+                {
                     printf("\n");
-                    printf("\nSet S1:");
-                    printSet(S1);
-                    printf("\n");
-                    printf("\nSet S2:");
-                    printSet(S2);
-                    break;
-
-            case 4:
-                    S=Union(S1,S2);
-                    printSet(S);
-                    FlushSet(&S);
-                    //Remember to free all stuff in S
-                    break;
-
-            case 5:
-                    S=Intersection(S1,S2);
-                    printSet(S);
-                    FlushSet(&S);
-                    //Remember to free all stuff in S
-                    break;
-
-            case 6:
-                    S=Difference(S1,S2);
-                    printSet(S);
-                    FlushSet(&S);
-                    //Remember to free all stuff in S
-                    break;
-
-            case 7:
-                    isSubset=Subset(S1,S2);
-                    if(isSubset==TRUE)
+                    printf("\nWhat do you want to do:");
+                    printf("\n1.Edit Set 'S1'");
+                    printf("\n2.Edit Set 'S2'");
+                    printf("\n3.Print Both Sets");
+                    printf("\n4.Get the Union of the sets in Set 'S'");
+                    printf("\n5.Get the Intersection of the sets in Set 'S'");
+                    printf("\n6.Get the Difference of the sets in Set 'S'");
+                    printf("\n7.Check whether S1 is a subset of S2");
+                    printf("\n8.Any other number to end program");
+                    printf("\nYour Choice:");
+                    scanf("%d",&choice);
+                    switch(choice)
                     {
-                        printf("\n\nYes,it is a subset");
-                    }
-                    else
-                    {
-                        printf("\n\nNo,it isin't a subset");
-                    }
-                    break;
+                        case 1:
+                                EditSetUI(&S1);
+                                break;
+                        
+                        case 2:
+                                EditSetUI(&S2);
+                                break;
 
-            default:
-                    exit=1;
-                    break;
+                        case 3:
+                                printf("\n");
+                                printf("\nSet S1:");
+                                printSet(S1);
+                                printf("\n");
+                                printf("\nSet S2:");
+                                printSet(S2);
+                                break;
 
-        }
+                        case 4:
+                                S=Union(S1,S2);
+                                printSet(S);
+                                FlushSet(&S);
+                                //Remember to free all stuff in S
+                                break;
+
+                        case 5:
+                                S=Intersection(S1,S2);
+                                printSet(S);
+                                FlushSet(&S);
+                                //Remember to free all stuff in S
+                                break;
+
+                        case 6:
+                                S=Difference(S1,S2);
+                                printSet(S);
+                                FlushSet(&S);
+                                //Remember to free all stuff in S
+                                break;
+
+                        case 7:
+                                isSubset=Subset(S1,S2);
+                                if(isSubset==TRUE)
+                                {
+                                    printf("\n\nYes,it is a subset");
+                                }
+                                else
+                                {
+                                    printf("\n\nNo,it isin't a subset");
+                                }
+                                break;
+
+                        default:
+                                exit=1;
+                                printf("\n\nFreeing Up Memory....");
+                                FlushSet(&S1);
+                                FlushSet(&S2);
+                                printf("\nDone!!\n");
+                                break;
+
+                    }
+                }
+                break;
+
+        case 2:
+                //char **list={"dhruv","good"};//Need a static 2d char array...
+                ;
+                char list1[][MAX_SCAN]={"dhruv","good"};
+                char list2[][MAX_SCAN]={"good","neat","happy"};
+                int size1=2,size2=3;
+                Build(list1,size1,&S1);
+                Build(list2,size2,&S2);
+                printf("Set S1:");
+                printSet(S1);
+                printf("Set S2:");
+                printSet(S2);
+                S=Union(S1,S2);
+                printf("\nThe union is:");
+                printSet(S);
+                FlushSet(&S);
+                S=Intersection(S1,S2);
+                printf("\nThe intersection is:");
+                printSet(S);
+                FlushSet(&S);
+                S=Difference(S1,S2);
+                printf("\nThe difference(S1-S2) is:");
+                printSet(S);
+                FlushSet(&S);
+                isSubset=Subset(S1,S2);
+                if(isSubset==TRUE)
+                {
+                    printf("\nYes,S1 is a subset of S2");
+                }
+                else
+                {
+                    printf("\nNo,S1 is not a subset of S2");
+                }
+                FlushSet(&S1);
+                FlushSet(&S2);
+                break;
+    
+        default:
+                break;
+
     }
+        
+    
 }
     
 

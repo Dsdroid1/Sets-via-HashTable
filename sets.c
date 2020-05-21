@@ -9,7 +9,7 @@ int HashFunction(char *set_element,int HashSize)
     //Before this,it can be truncated ,folded or something
     for(i=0;i<len;i++)
     {
-        value+=(set_element[i]-'a')*i;
+        value+=(set_element[i]-'a')*(i+1);
     }
     value=value%HashSize;
     if(value<0)
@@ -240,7 +240,7 @@ char** Enumerate(Set S,int* size)//Pass size via main\caller function...
     return list;
 }
 
-status_code Build(char **list,int size,Set *S)
+status_code Build(char list[][MAX_SCAN],int size,Set *S)
 {
     InitializeEmptySet(S);
     int i=0,flag=0;

@@ -7,6 +7,7 @@
 #include<math.h>
 //Global Constants--------------------------------------------
 #define DEFAULT_SET_SIZE 11 
+#define MAX_SCAN 20
 //Structures--------------------------------------------------
 typedef struct HashElement
 {
@@ -34,7 +35,7 @@ Bool isElementOf(char *x,Set S);
 Bool isEmpty(Set S);
 int Size(Set S);
 char** Enumerate(Set S,int* size);//Pass size via main\caller function...
-status_code Build(char **list,int size,Set *S);//TO BE TESTED..................!!!!!!!!!!!!!!!!!!!!!!!!
+status_code Build(char list[][MAX_SCAN],int size,Set *S);//TO BE TESTED..................!!!!!!!!!!!!!!!!!!!!!!!!
 
 //Misc. Functions--------------------------------------------
 void printSet(Set S);
