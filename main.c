@@ -125,6 +125,8 @@ void EditSetUI(Set *S)//Available for dynamic sets only...
     int exit=0;
     int choice=0;
     char str[MAX_SCAN];
+    char **list=NULL;
+    int size=0;
     status_code sc;
     while(exit==0)
     {
@@ -133,7 +135,9 @@ void EditSetUI(Set *S)//Available for dynamic sets only...
         printf("\n1.Enter element in set");
         printf("\n2.Delete element from set");
         printf("\n3.Print the set");
-        printf("\n4.Any other number to go back");
+        printf("\n4.Enumerate this set to get a char**");
+        printf("\n5.Any other number to go back");
+        
         printf("\nYour Choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -170,6 +174,13 @@ void EditSetUI(Set *S)//Available for dynamic sets only...
             case 3:
                     printSet(*S);
                     break;
+
+            case 4:
+                    flushStringArray(list,&size);
+                    list=Enumerate(*S,&size);
+                    printStringArray(list,size);
+                    break;
+
 
             default:
                     exit=1;
